@@ -38,6 +38,12 @@ static void funcChunkLoader(Chunk *chunk, int seed)
 	}
 }
 
+void ChunkLoader::setLoaded(ChunkPos pos)
+{
+	unsigned long long key = Maths::chunkKey(pos.x, pos.z);
+	map[key] = true;
+}
+
 bool ChunkLoader::isLoaded(ChunkPos pos)
 {
 	unsigned long long key = Maths::chunkKey(pos.x, pos.z);

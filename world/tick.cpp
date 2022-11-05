@@ -115,6 +115,19 @@ static void doTick()
 		g_player->setDy(0);
 		g_player->setJumps(0);
 	}
+	ChunkPos pos;
+	int cx = Maths::div(g_player->getX(), 16);
+	int cz = Maths::div(g_player->getZ(), 16);
+	g_chunkLoader.setLevel(g_player->getLevel());
+	for (int i = -3; i <= 3; i++) {
+		for (int j = -3; j <= 3; j++) {
+			pos = { i + cx, j + cz };
+			if (!g_chunkLoader.isLoaded(pos)) {
+				g_chunkLoader.setLoaded(pos);
+				g_chunkLoader.startLoad(pos);
+			}
+		}
+	}
 }
 
 void funcTickUpdater()

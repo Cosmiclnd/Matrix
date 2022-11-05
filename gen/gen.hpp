@@ -36,6 +36,7 @@ public:
 	Level *getLevel() { return level; }
 	void setLevel(Level *level_) { level = level_; }
 	void setSeed(int seed_) { seed = seed_; }
+	void setLoaded(ChunkPos pos);
 	bool isLoaded(ChunkPos pos);
 	void startLoad(ChunkPos pos);
 	void nowLoad(ChunkPos pos);
