@@ -95,12 +95,13 @@ WorldScreen *WorldScreen::make(void *player_)
 }
 
 void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
-	int z, double px, double py, double pz)
+	int z, double px, double py, double pz, bool *vis, int &count)
 {
 	int maxj = py - (y << 4) + 2;
 	maxj = maxj < 16 ? maxj : 16;
 	for (int i = 0; i < 16; i++) {
 		for (int k = 0; k < 16; k++) {
+			if (vis[(i << 4) + k]) continue;
 			int j = std::min(
 				int(round(py + 2)), ((y + 1) << 4) - 1) - (y << 4);
 			if (j < 0) continue;
@@ -114,6 +115,8 @@ void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 			}
 			int block = subChunk->getRelativeBlock(rpos);
 			if (block == -1) continue;
+			vis[(i << 4) + k] = true;
+			count--;
 			BlockPos pos = { i + (x << 4), j + (y << 4), k + (z << 4) };
 			SDL_Rect rect = {
 				int((px - pos.x) * Settings::BLOCK_LENGTH_PIXEL +
@@ -138,6 +141,8 @@ void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 
 void WorldScreen::showPlayerScene()
 {
+	static bool vis[256];
+	static int count;
 	double px = round(g_player->getX() * 100) / 100;
 	double py = round(g_player->getY() * 100) / 100;
 	double pz = round(g_player->getZ() * 100) / 100;
@@ -150,10 +155,13 @@ void WorldScreen::showPlayerScene()
 			ChunkPos cpos { x, z };
 			Chunk *chunk = level->getChunk(cpos);
 			if (!chunk) continue;
-			for (int y = 0; y < maxy; y++) {
+			memset(vis, 0, sizeof(vis));
+			count = 256;
+			for (int y = maxy - 1; y >= 0; y--) {
 				SubChunk *subChunk = chunk->getSubChunk(y);
 				if (!subChunk) continue;
-				showSubChunk(chunk, subChunk, x, y, z, px, py, pz);
+				showSubChunk(chunk, subChunk, x, y, z, px, py, pz, vis, count);
+				if (count == 0) break;
 			}
 		}
 	}
