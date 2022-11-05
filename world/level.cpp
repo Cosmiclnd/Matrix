@@ -104,10 +104,8 @@ int Level::getBlock(BlockPos pos)
 
 void Level::setBlock(BlockPos pos, int block)
 {
-	ChunkPos cpos { Maths::div(pos.x, 16), Maths::div(pos.z, 16) };
-	unsigned long long cpos_ = Maths::chunkKey(cpos.x, cpos.z);
-	if (map.find(cpos_) == map.end()) map[cpos_] = new Chunk(cpos);
-	Chunk *chunk = map[cpos_];
+	ChunkPos cpos = { Maths::div(pos.x, 16), Maths::div(pos.z, 16) };
+	Chunk *chunk = newChunk(cpos);
 	chunk->setBlock(pos, block);
 }
 
@@ -120,6 +118,14 @@ Chunk *Level::getChunk(ChunkPos pos)
 {
 	if (!existsChunk(pos)) return 0;
 	return map[Maths::chunkKey(pos.x, pos.z)];
+}
+
+Chunk *Level::newChunk(ChunkPos pos)
+{
+	unsigned long long key = Maths::chunkKey(pos.x, pos.z);
+	if (!existsChunk(pos)) map[key] = new Chunk(pos);
+	Chunk *chunk = map[key];
+	return chunk;
 }
 
 namespace Levels {

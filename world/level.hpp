@@ -61,6 +61,7 @@ public:
 	Level *setGravity(double gravity_) { gravity = gravity_; return this; }
 	bool existsChunk(ChunkPos pos);
 	Chunk *getChunk(ChunkPos pos);
+	Chunk *newChunk(ChunkPos pos);
 };
 
 namespace Levels {

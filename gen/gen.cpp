@@ -18,3 +18,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "gen.hpp"
+#include "../maths.hpp"
+
+static void funcChunkLoader(Chunk *chunk, int seed)
+{
+	;
+}
+
+bool ChunkLoader::isLoaded(ChunkPos pos)
+{
+	unsigned long long key = Maths::chunkKey(pos.x, pos.z);
+	if (map.find(key) == map.end()) return false;
+	return map[key];
+}
+
+void ChunkLoader::startLoad(ChunkPos pos)
+{
+	Chunk *chunk = level->newChunk(pos);
+	std::thread threadChunkLoader(funcChunkLoader, chunk, seed);
+	threads.push_back(threadChunkLoader);
+}

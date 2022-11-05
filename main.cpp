@@ -51,7 +51,7 @@ int main()
 	g_player->teleport(0, 91, 0);
 	g_player->pushGuiLayer(
 		new GuiLayer(makeNewScreen<WorldScreen>(Screens::WORLD, g_player)));
-	for (int i = -10; i <= 80; i++) {
+	for (int i = -80; i <= 80; i++) {
 		for (int j = 0; j <= 90; j++) {
 			for (int k = -80; k <= 80; k++) {
 				Levels::OVERWORLD->setBlock(BlockPos(i, j, k), Blocks::STONE);

@@ -22,6 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "../settings.hpp"
 #include "../maths.hpp"
 #include "../gui/font.hpp"
+#include "../gen/gen.hpp"
 
 #include <iostream>
 #include <thread>
