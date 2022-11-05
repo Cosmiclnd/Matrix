@@ -27,6 +27,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "entity/entity.hpp"
 #include "world/level.hpp"
 #include "world/tick.hpp"
+#include "world/item.hpp"
 #include "gui/font.hpp"
 
 int Settings::FPS = 60;
@@ -35,6 +36,7 @@ void initAll()
 {
 	init();
 	initBlock();
+	initItem();
 	initHook();
 	initScreen();
 	initMaths();

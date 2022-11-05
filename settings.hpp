@@ -26,6 +26,7 @@ namespace Settings {
 	const int WINDOW_WIDTH = 700;
 	const int WINDOW_HEIGHT = 500;
 	const int BLOCK_LENGTH_PIXEL = 24;
+	const int ITEM_LENGTH_PIXEL = 32;
 	const int CHUNK_LENGTH_PIXEL = BLOCK_LENGTH_PIXEL << 4;
 	const int CHUNKS_SHOWW = (WINDOW_WIDTH + 2 * CHUNK_LENGTH_PIXEL - 1) /
 		CHUNK_LENGTH_PIXEL;
@@ -33,6 +34,7 @@ namespace Settings {
 		CHUNK_LENGTH_PIXEL;
 
 	const int MAX_BLOCKS = 512;
+	const int MAX_ITEMS = 512;
 	const int MAX_SCREENS = 256;
 	const int MAX_HOOKS = 256;
 

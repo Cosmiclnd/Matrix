@@ -21,11 +21,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define __WORLD_BLOCK_HPP
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <string>
 #include <unordered_map>
 #include <exception>
 
+#include "core.hpp"
 #include "../settings.hpp"
 #include "../registry.hpp"
 
@@ -46,9 +46,17 @@ class Block {
 
 public:
 	Block();
-	virtual SDL_Surface *getSurface();
+	virtual SDL_Surface *getSurface(BlockPos pos);
 	virtual void setSurface(SDL_Surface *surface_);
 	virtual bool collide(int i, int j) { return mask[i][j]; }
+};
+
+class RandomTextureBlock : public Block {
+	SDL_Surface *extended[4];
+
+public:
+	virtual SDL_Surface *getSurface(BlockPos pos);
+	virtual void setSurface(SDL_Surface *surface_);
 };
 
 class BlockRegistry {

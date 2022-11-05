@@ -18,11 +18,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "block.hpp"
+#include "../functions.hpp"
+#include "../maths.hpp"
 
 #include <filesystem>
+#include <unordered_map>
 #include <SDL2/SDL2_rotozoom.h>
-
-#include "../functions.hpp"
 
 BlockRegistry blockRegistry;
 
@@ -35,7 +36,7 @@ Block::Block()
 	}
 }
 
-SDL_Surface *Block::getSurface()
+SDL_Surface *Block::getSurface(BlockPos pos)
 {
 	return surface;
 }
@@ -43,6 +44,20 @@ SDL_Surface *Block::getSurface()
 void Block::setSurface(SDL_Surface *surface_)
 {
 	surface = surface_;
+}
+
+SDL_Surface *RandomTextureBlock::getSurface(BlockPos pos)
+{
+	srand(int((pos.x << 24) + (pos.y << 14) + pos.z));
+	return extended[Maths::mod(rand(), 4)];
+}
+
+void RandomTextureBlock::setSurface(SDL_Surface *surface_)
+{
+	extended[0] = surface_;
+	extended[1] = rotateSurface90Degrees(surface_, 1);
+	extended[2] = rotateSurface90Degrees(surface_, 2);
+	extended[3] = rotateSurface90Degrees(surface_, 3);
 }
 
 BlockRegistry::BlockRegistry()
@@ -64,7 +79,7 @@ int BlockRegistry::registered(ResourceLocation name_, Block *block)
 		name_.getName() + ".png";
 	SDL_Surface *surface = tryLoadImage(filename);
 	if (!surface) {
-		g_logger->warn("Loading %s instead", filename.c_str());
+		g_logger->warn("Loading debug texture instead");
 		loadDebugTexture(name_, block);
 		return present - 1;
 	}
@@ -111,7 +126,7 @@ void initBlock()
 	static RegistryWrapper<BlockRegistry, Block> BLOCKS =
 		RegistryWrapper<BlockRegistry, Block>::
 		getWrapper(&blockRegistry, "matrix");
-	Blocks::STONE = BLOCKS.registered("stone", new Block());
+	Blocks::STONE = BLOCKS.registered("stone", new RandomTextureBlock());
 	Blocks::DIRT = BLOCKS.registered("dirt", new Block());
 	Blocks::GRASS_BLOCK = BLOCKS.registered("grass_block", new Block());
 }

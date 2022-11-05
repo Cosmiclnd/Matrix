@@ -114,21 +114,21 @@ void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 			}
 			int block = subChunk->getRelativeBlock(rpos);
 			if (block == -1) continue;
-			int by = j + (y << 4);
+			BlockPos pos = { i + (x << 4), j + (y << 4), k + (z << 4) };
 			SDL_Rect rect = {
-				int((px - (x << 4) - i) * Settings::BLOCK_LENGTH_PIXEL +
+				int((px - pos.x) * Settings::BLOCK_LENGTH_PIXEL +
 					Settings::WINDOW_WIDTH / 2),
-				int((pz - (z << 4) - k) * Settings::BLOCK_LENGTH_PIXEL +
+				int((pz - pos.z) * Settings::BLOCK_LENGTH_PIXEL +
 					Settings::WINDOW_HEIGHT / 2),
 				Settings::BLOCK_LENGTH_PIXEL,
 				Settings::BLOCK_LENGTH_PIXEL
 			};
 			SDL_BlitSurface(blockRegistry.getRegistered(block)->
-					getSurface(), 0, surface, &rect);
+					getSurface(pos), 0, surface, &rect);
 			int color, alpha;
-			if (py < by) color = 255;
+			if (py < pos.y) color = 255;
 			else color = 0;
-			alpha = round(abs((py - by) * 27));
+			alpha = round(abs((py - pos.y) * 27));
 			if (alpha > 255) alpha = 255;
 			SDL_SetRenderDrawColor(renderer, color, color, color, alpha);
 			SDL_RenderFillRect(renderer, &rect);
