@@ -44,6 +44,7 @@ class Chunk {
 
 public:
 	Chunk(ChunkPos pos_);
+	ChunkPos getPos() { return pos; }
 	SubChunk *newSubChunk(int y);
 	SubChunk *getSubChunk(int y);
 	int getBlock(BlockPos pos_);

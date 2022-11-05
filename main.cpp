@@ -29,6 +29,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "world/tick.hpp"
 #include "world/item.hpp"
 #include "gui/font.hpp"
+#include "gen/gen.hpp"
 
 int Settings::FPS = 60;
 
@@ -51,11 +52,20 @@ int main()
 	g_player->teleport(0, 91, 0);
 	g_player->pushGuiLayer(
 		new GuiLayer(makeNewScreen<WorldScreen>(Screens::WORLD, g_player)));
-	for (int i = -80; i <= 80; i++) {
+	/*for (int i = -80; i <= 80; i++) {
 		for (int j = 0; j <= 90; j++) {
 			for (int k = -80; k <= 80; k++) {
 				Levels::OVERWORLD->setBlock(BlockPos(i, j, k), Blocks::STONE);
 			}
+		}
+	}*/
+	g_chunkLoader.setSeed(0);
+	g_chunkLoader.setLevel(Levels::OVERWORLD);
+	ChunkPos pos;
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			pos = { i, j };
+			g_chunkLoader.nowLoad(pos);
 		}
 	}
 	Levels::OVERWORLD->setBlock(BlockPos(2, 91, 2), Blocks::STONE);

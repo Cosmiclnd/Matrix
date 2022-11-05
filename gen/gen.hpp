@@ -30,13 +30,17 @@ class ChunkLoader {
 	Level *level;
 	int seed;
 	std::unordered_map<long long, bool> map;
-	std::list<std::thread> threads;
 
 public:
-	ChunkLoader(Level *level_) : level(level_), seed(0) {}
+	ChunkLoader() : level(0), seed(0) {}
+	Level *getLevel() { return level; }
+	void setLevel(Level *level_) { level = level_; }
 	void setSeed(int seed_) { seed = seed_; }
 	bool isLoaded(ChunkPos pos);
 	void startLoad(ChunkPos pos);
+	void nowLoad(ChunkPos pos);
 };
+
+extern ChunkLoader g_chunkLoader;
 
 #endif

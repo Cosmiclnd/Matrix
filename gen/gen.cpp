@@ -19,10 +19,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "gen.hpp"
 #include "../maths.hpp"
+#include "../functions.hpp"
+#include "../world/block.hpp"
+
+ChunkLoader g_chunkLoader;
 
 static void funcChunkLoader(Chunk *chunk, int seed)
 {
-	;
+	ChunkPos cpos = chunk->getPos();
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 16; j++) {
+			chunk->setBlock(BlockPos(
+				(cpos.x << 4) + i,
+				90,
+				(cpos.z << 4) + j),
+				Blocks::GRASS_BLOCK);
+		}
+	}
 }
 
 bool ChunkLoader::isLoaded(ChunkPos pos)
@@ -36,5 +49,11 @@ void ChunkLoader::startLoad(ChunkPos pos)
 {
 	Chunk *chunk = level->newChunk(pos);
 	std::thread threadChunkLoader(funcChunkLoader, chunk, seed);
-	threads.push_back(threadChunkLoader);
+	threadChunkLoader.detach();
+}
+
+void ChunkLoader::nowLoad(ChunkPos pos)
+{
+	Chunk *chunk = level->newChunk(pos);
+	funcChunkLoader(chunk, seed);
 }

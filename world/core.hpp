@@ -30,10 +30,14 @@ struct BlockPos {
 
 struct SubChunkPos {
 	int x, y, z;
+	SubChunkPos() : x(0), y(0), z(0) {}
+	SubChunkPos(int x_, int y_, int z_) : x(x_), y(y_), z(z_) {}
 };
 
 struct ChunkPos {
 	int x, z;
+	ChunkPos() : x(0), z(0) {};
+	ChunkPos(int x_, int z_) : x(x_), z(z_) {}
 };
 
 #endif
