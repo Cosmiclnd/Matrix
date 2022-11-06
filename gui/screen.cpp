@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "screen.hpp"
 #include "font.hpp"
 #include "texture.hpp"
+#include "cursor.hpp"
 #include "../functions.hpp"
 #include "../maths.hpp"
 #include "../hook.hpp"
@@ -32,6 +33,7 @@ int g_overBlocks;
 ScreenRegistry screenRegistry;
 
 static BlockPos target;
+static bool targetValid;
 
 Screen::Screen(int x_, int y_, int w_, int h_)
 {
@@ -99,7 +101,8 @@ WorldScreen *WorldScreen::make(void *player_)
 }
 
 void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
-	int z, double px, double py, double pz, bool *vis, int &count)
+	int z, double px, double py, double pz, bool *vis, int &count,
+	bool &targetValid)
 {
 	SDL_Point point;
 	SDL_GetMouseState(&point.x, &point.y);
@@ -139,10 +142,13 @@ void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 			else color = 0;
 			alpha = round(abs((py - pos.y) * 27));
 			if (alpha > 255) alpha = 255;
-			if (SDL_PointInRect(&point, &rect) && (py - pos.y <= 4)) {
+			if (SDL_PointInRect(&point, &rect)) {
 				target = pos;
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 210);
-				SDL_RenderDrawRect(renderer, &rect);
+				if (py - pos.y <= 4) {
+					targetValid = true;
+					SDL_SetRenderDrawColor(renderer, 255, 255, 255, 210);
+					SDL_RenderDrawRect(renderer, &rect);
+				}
 			}
 			SDL_SetRenderDrawColor(renderer, color, color, color, alpha);
 			SDL_RenderFillRect(renderer, &rect);
@@ -161,6 +167,7 @@ void WorldScreen::showPlayerScene()
 	int starth = Maths::div(pz, 16) - Settings::CHUNKS_SHOWH / 2;
 	Level *level = g_player->getLevel();
 	int maxy = Maths::div(py + g_overBlocks - 1, 16) + 1;
+	bool targetValid_ = false;
 	for (int x = startw; x < startw + Settings::CHUNKS_SHOWW; x++) {
 		for (int z = starth; z < starth + Settings::CHUNKS_SHOWH; z++) {
 			ChunkPos cpos { x, z };
@@ -171,7 +178,8 @@ void WorldScreen::showPlayerScene()
 			for (int y = maxy - 1; y >= 0; y--) {
 				SubChunk *subChunk = chunk->getSubChunk(y);
 				if (!subChunk) continue;
-				showSubChunk(chunk, subChunk, x, y, z, px, py, pz, vis, count);
+				showSubChunk(chunk, subChunk, x, y, z, px, py, pz, vis, count,
+					targetValid_);
 				if (count == 0) break;
 			}
 		}
@@ -182,6 +190,8 @@ void WorldScreen::showPlayerScene()
 		16, 16};
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 160);
 	SDL_RenderDrawRect(renderer, &rect);
+	targetValid = targetValid_;
+	setCursor(Cursors::SELECTED);
 }
 
 void WorldScreen::showOverBlocks()
@@ -248,4 +258,5 @@ void initScreen()
 	Screens::WORLD = SCREENS.registered("world", new WorldScreen());
 	hookRegistry.addListener(Hooks::KEYDOWN, (HookFunc) hookKeydown);
 	g_overBlocks = 2;
+	targetValid = false;
 }

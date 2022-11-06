@@ -35,7 +35,7 @@ int TextureRegistry::registered(ResourceLocation name_, std::string path)
 
 SDL_Surface *TextureRegistry::getRegistered(std::string name)
 {
-	if (map.find(name) == map.end()) throw BadBlockType();
+	if (map.find(name) == map.end()) throw BadTextureType();
 	return map[name];
 }
 
@@ -47,5 +47,5 @@ void initTexture()
 	TEXTURES.registered("over_block", "gui/world/over_block.png");
 	TEXTURES.registered("pickaxe", "gui/world/pickaxe.png");
 	TEXTURES.registered("sword", "gui/world/sword.png");
-	TEXTURES.registered("select", "gui/world/select.png");
+	TEXTURES.registered("selected", "gui/world/selected.png");
 }

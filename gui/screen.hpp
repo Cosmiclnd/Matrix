@@ -74,7 +74,8 @@ public:
 
 private:
 	void showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y, int z,
-		double px, double py, double pz, bool *vis, int &count);
+		double px, double py, double pz, bool *vis, int &count,
+		bool &target_valid);
 	void showPlayerScene();
 	void showOverBlocks();
 };

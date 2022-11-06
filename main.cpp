@@ -30,6 +30,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "world/item.hpp"
 #include "gui/font.hpp"
 #include "gui/texture.hpp"
+#include "gui/cursor.hpp"
 #include "gen/gen.hpp"
 
 int Settings::FPS = 60;
@@ -41,6 +42,7 @@ void initAll()
 	initTexture();
 	initBlock();
 	initItem();
+	initCursor();
 	initScreen();
 	initMaths();
 	initEntity();
