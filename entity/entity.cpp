@@ -105,11 +105,13 @@ bool Player::collide(int i, int j)
 
 static void hookKeydown(KeydownHook *hook)
 {
-	if (hook->getSym() == SDLK_w) g_player->setDirection(0, true);
-	else if (hook->getSym() == SDLK_s) g_player->setDirection(1, true);
-	else if (hook->getSym() == SDLK_a) g_player->setDirection(2, true);
-	else if (hook->getSym() == SDLK_d) g_player->setDirection(3, true);
-	else if (hook->getSym() == SDLK_SPACE) {
+	if (hook->getCanceled()) return;
+	int sym = hook->getSym();
+	if (sym == SDLK_w) g_player->setDirection(0, true);
+	else if (sym == SDLK_s) g_player->setDirection(1, true);
+	else if (sym == SDLK_a) g_player->setDirection(2, true);
+	else if (sym == SDLK_d) g_player->setDirection(3, true);
+	else if (sym == SDLK_SPACE) {
 		g_player->setNewJump(true);
 		g_player->setDirection(4, true);
 	}
@@ -117,11 +119,13 @@ static void hookKeydown(KeydownHook *hook)
 
 static void hookKeyup(KeyupHook *hook)
 {
-	if (hook->getSym() == SDLK_w) g_player->setDirection(0, false);
-	else if (hook->getSym() == SDLK_s) g_player->setDirection(1, false);
-	else if (hook->getSym() == SDLK_a) g_player->setDirection(2, false);
-	else if (hook->getSym() == SDLK_d) g_player->setDirection(3, false);
-	else if (hook->getSym() == SDLK_SPACE) g_player->setDirection(4, false);
+	if (hook->getCanceled()) return;
+	int sym = hook->getSym();
+	if (sym == SDLK_w) g_player->setDirection(0, false);
+	else if (sym == SDLK_s) g_player->setDirection(1, false);
+	else if (sym == SDLK_a) g_player->setDirection(2, false);
+	else if (sym == SDLK_d) g_player->setDirection(3, false);
+	else if (sym == SDLK_SPACE) g_player->setDirection(4, false);
 }
 
 void initEntity()

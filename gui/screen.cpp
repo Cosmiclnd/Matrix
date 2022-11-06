@@ -19,8 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "screen.hpp"
 #include "font.hpp"
+#include "texture.hpp"
 #include "../functions.hpp"
 #include "../maths.hpp"
+#include "../hook.hpp"
 #include "../entity/entity.hpp"
 
 #include <SDL2/SDL2_gfxPrimitives.h>
@@ -83,6 +85,7 @@ void WorldScreen::update(bool show)
 	if (show) {
 		SDL_FillRect(surface, 0, 0xff00afff);
 		showPlayerScene();
+		showOverBlocks();
 	}
 	Screen::update(show);
 }
@@ -172,9 +175,14 @@ void WorldScreen::showPlayerScene()
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
-void WorldScreen::showShowBlocks()
+void WorldScreen::showOverBlocks()
 {
-	;
+	SDL_Surface *texture = textureRegistry.getRegistered("matrix:over_block");
+	SDL_Rect rect = { 1, 1, 20, 5 };
+	for (int i = 0; i <= g_overBlocks; i++) {
+		rect.y = 1 + i * 5;
+		SDL_BlitSurface(texture, 0, surface, &rect);
+	}
 }
 
 ScreenRegistry::ScreenRegistry()
@@ -212,6 +220,16 @@ namespace Screens {
 	int WORLD;
 };
 
+static void hookKeydown(KeydownHook *hook)
+{
+	if (hook->getCanceled()) return;
+	int sym = hook->getSym();
+	if (sym == SDLK_EQUALS) g_overBlocks++;
+	else if (sym == SDLK_MINUS) g_overBlocks--;
+	if (g_overBlocks < 0) g_overBlocks = 0;
+	else if (g_overBlocks > 4) g_overBlocks = 4;
+}
+
 void initScreen()
 {
 	static RegistryWrapper<ScreenRegistry, Screen *> SCREENS =
@@ -219,5 +237,6 @@ void initScreen()
 		getWrapper(&screenRegistry, "matrix");
 	Screens::START = SCREENS.registered("start", new StartScreen());
 	Screens::WORLD = SCREENS.registered("world", new WorldScreen());
+	hookRegistry.addListener(Hooks::KEYDOWN, (HookFunc) hookKeydown);
 	g_overBlocks = 2;
 }

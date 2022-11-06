@@ -37,10 +37,10 @@ int Settings::FPS = 60;
 void initAll()
 {
 	init();
+	initHook();
 	initTexture();
 	initBlock();
 	initItem();
-	initHook();
 	initScreen();
 	initMaths();
 	initEntity();

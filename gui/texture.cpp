@@ -44,7 +44,7 @@ void initTexture()
 	static RegistryWrapper<TextureRegistry, std::string> TEXTURES =
 		RegistryWrapper<TextureRegistry, std::string>::
 		getWrapper(&textureRegistry, "matrix");
-	TEXTURES.registered("show_block", "gui/world/show_block.png");
+	TEXTURES.registered("over_block", "gui/world/over_block.png");
 	TEXTURES.registered("pickaxe", "gui/world/pickaxe.png");
 	TEXTURES.registered("sword", "gui/world/sword.png");
 	TEXTURES.registered("select", "gui/world/select.png");
