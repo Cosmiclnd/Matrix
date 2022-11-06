@@ -31,6 +31,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 int g_overBlocks;
 ScreenRegistry screenRegistry;
 
+static BlockPos target;
+
 Screen::Screen(int x_, int y_, int w_, int h_)
 {
 	surface = SDL_CreateRGBSurface(0, w_, h_, 32, 0, 0, 0, 0);
@@ -99,6 +101,8 @@ WorldScreen *WorldScreen::make(void *player_)
 void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 	int z, double px, double py, double pz, bool *vis, int &count)
 {
+	SDL_Point point;
+	SDL_GetMouseState(&point.x, &point.y);
 	int maxj = py - (y << 4) + g_overBlocks - 1;
 	maxj = maxj < 16 ? maxj : 16;
 	for (int i = 0; i < 16; i++) {
@@ -135,6 +139,11 @@ void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 			else color = 0;
 			alpha = round(abs((py - pos.y) * 27));
 			if (alpha > 255) alpha = 255;
+			if (SDL_PointInRect(&point, &rect) && (py - pos.y <= 4)) {
+				target = pos;
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 210);
+				SDL_RenderDrawRect(renderer, &rect);
+			}
 			SDL_SetRenderDrawColor(renderer, color, color, color, alpha);
 			SDL_RenderFillRect(renderer, &rect);
 		}
