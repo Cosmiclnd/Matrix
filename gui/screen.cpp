@@ -26,6 +26,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <algorithm>
 
+int g_overBlocks;
 ScreenRegistry screenRegistry;
 
 Screen::Screen(int x_, int y_, int w_, int h_)
@@ -82,8 +83,6 @@ void WorldScreen::update(bool show)
 	if (show) {
 		SDL_FillRect(surface, 0, 0xff00afff);
 		showPlayerScene();
-		showFps();
-		showPos();
 	}
 	Screen::update(show);
 }
@@ -97,13 +96,13 @@ WorldScreen *WorldScreen::make(void *player_)
 void WorldScreen::showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y,
 	int z, double px, double py, double pz, bool *vis, int &count)
 {
-	int maxj = py - (y << 4) + 2;
+	int maxj = py - (y << 4) + g_overBlocks - 1;
 	maxj = maxj < 16 ? maxj : 16;
 	for (int i = 0; i < 16; i++) {
 		for (int k = 0; k < 16; k++) {
 			if (vis[(i << 4) + k]) continue;
-			int j = std::min(
-				int(round(py + 2)), ((y + 1) << 4) - 1) - (y << 4);
+			int j = std::min(int(round(py + g_overBlocks - 1)),
+				((y + 1) << 4) - 1) - (y << 4);
 			if (j < 0) continue;
 			j %= 16;
 			BlockPos rpos = { i, j, k };
@@ -149,7 +148,7 @@ void WorldScreen::showPlayerScene()
 	int startw = Maths::div(px, 16) - Settings::CHUNKS_SHOWW / 2;
 	int starth = Maths::div(pz, 16) - Settings::CHUNKS_SHOWH / 2;
 	Level *level = g_player->getLevel();
-	int maxy = Maths::div(py, 16) + 1;
+	int maxy = Maths::div(py + g_overBlocks - 1, 16) + 1;
 	for (int x = startw; x < startw + Settings::CHUNKS_SHOWW; x++) {
 		for (int z = starth; z < starth + Settings::CHUNKS_SHOWH; z++) {
 			ChunkPos cpos { x, z };
@@ -171,33 +170,6 @@ void WorldScreen::showPlayerScene()
 		16, 16};
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 160);
 	SDL_RenderDrawRect(renderer, &rect);
-}
-
-void WorldScreen::showPos()
-{
-	static FontStyle style = { 0xffffffff, 0x00000000, 16 };
-	static SDL_Rect rect = { 1, 1, 0, 0 };
-	g_ascii.setStyle(style)->setString(
-		Maths::double2base10(g_player->getX(), 2) + " " +
-		Maths::double2base10(g_player->getY(), 2) + " " +
-		Maths::double2base10(g_player->getZ(), 2))->blit(surface, &rect);
-}
-
-void WorldScreen::showFps()
-{
-	static FontStyle style = { 0xffffffff, 0x00000000, 16 };
-	static SDL_Rect rect = { 1, 17, 0, 0 };
-	fps++;
-	std::chrono::high_resolution_clock::time_point current =
-		std::chrono::high_resolution_clock::now();
-	g_ascii.setStyle(style)->
-		setString("FPS: " + Maths::int2base10(showingFps) + "/" +
-		Maths::int2base10(Settings::FPS))-> blit(surface, &rect);
-	if (current - lastShowFps >= std::chrono::seconds(1)) {
-		lastShowFps = current;
-		showingFps = fps;
-		fps = 0;
-	}
 }
 
 ScreenRegistry::ScreenRegistry()
@@ -242,4 +214,5 @@ void initScreen()
 		getWrapper(&screenRegistry, "matrix");
 	Screens::START = SCREENS.registered("start", new StartScreen());
 	Screens::WORLD = SCREENS.registered("world", new WorldScreen());
+	g_overBlocks = 0;
 }

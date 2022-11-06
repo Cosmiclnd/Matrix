@@ -76,8 +76,6 @@ private:
 	void showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y, int z,
 		double px, double py, double pz, bool *vis, int &count);
 	void showPlayerScene();
-	void showPos();
-	void showFps();
 };
 
 class ScreenRegistry {
@@ -100,6 +98,7 @@ namespace Screens {
 	extern int WORLD;
 };
 
+extern int g_overBlocks;
 extern ScreenRegistry screenRegistry;
 
 template <typename T>
