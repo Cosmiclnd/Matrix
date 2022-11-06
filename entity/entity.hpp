@@ -53,11 +53,13 @@ public:
 
 class LivingEntity : public Entity {
 protected:
-	double health, maxHealth;
+	double health, maxHealth, breaking;
 
 public:
 	double getHealth() { return health; }
 	double getMaxHealth() { return maxHealth; }
+	double getBreaking() { return breaking; }
+	void setBreaking(double breaking_) { breaking = breaking_; }
 };
 
 class Player : public LivingEntity {

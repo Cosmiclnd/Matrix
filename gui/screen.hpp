@@ -111,6 +111,9 @@ T *makeNewScreen(int type, void *player)
 	return screen->make(player);
 }
 
+BlockPos getTarget();
+bool isTargetValid();
+
 void initScreen();
 
 #endif

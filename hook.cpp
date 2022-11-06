@@ -54,6 +54,30 @@ int KeyupHook::getSym()
 	return sym;
 }
 
+MousedownHook::MousedownHook(int button_, int x_, int y_)
+	: CancelableHook(), button(button_), x(x_), y(y_)
+{}
+
+bool MousedownHook::isClicked(int button_)
+{
+	return button == button_;
+}
+
+int MousedownHook::getButton()
+{
+	return button;
+}
+
+int MousedownHook::getX()
+{
+	return x;
+}
+
+int MousedownHook::getY()
+{
+	return y;
+}
+
 HookRegistry::HookRegistry()
 	: present(0)
 {
@@ -89,6 +113,7 @@ void HookRegistry::pollHook(int id, Hook *hook)
 namespace Hooks {
 	int KEYDOWN;
 	int KEYUP;
+	int MOUSEDOWN;
 };
 
 void initHook()
@@ -98,4 +123,5 @@ void initHook()
 		getWrapper(&hookRegistry, "matrix");
 	Hooks::KEYDOWN = HOOKS.registered("keydown", 0);
 	Hooks::KEYUP = HOOKS.registered("keyup", 0);
+	Hooks::MOUSEDOWN = HOOKS.registered("mousedown", 0);
 }

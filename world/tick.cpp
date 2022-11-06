@@ -88,6 +88,23 @@ static void playerJump(Player *player)
 	}
 }
 
+static void updateChunkLoading()
+{
+	ChunkPos pos;
+	int cx = Maths::div(g_player->getX(), 16);
+	int cz = Maths::div(g_player->getZ(), 16);
+	g_chunkLoader.setLevel(g_player->getLevel());
+	for (int i = -3; i <= 3; i++) {
+		for (int j = -3; j <= 3; j++) {
+			pos = { i + cx, j + cz };
+			if (!g_chunkLoader.isLoaded(pos)) {
+				g_chunkLoader.setLoaded(pos);
+				g_chunkLoader.startLoad(pos);
+			}
+		}
+	}
+}
+
 static void doTick()
 {
 	double speed = 0.1;
@@ -102,7 +119,8 @@ static void doTick()
 		g_player->setMaxJumps(1);
 		playerJump(g_player);
 	}
-	double oldDy = g_player->getDy(), dy = oldDy - g_player->getLevel()->getGravity();
+	double oldDy = g_player->getDy(),
+		dy = oldDy - g_player->getLevel()->getGravity();
 	bool flag = true;
 	for (int i = 0; i < 8; i++) {
 		flag &= safeTeleportRelative(g_player, 0, dy / 8, 0);
@@ -115,19 +133,20 @@ static void doTick()
 		g_player->setDy(0);
 		g_player->setJumps(0);
 	}
-	ChunkPos pos;
-	int cx = Maths::div(g_player->getX(), 16);
-	int cz = Maths::div(g_player->getZ(), 16);
-	g_chunkLoader.setLevel(g_player->getLevel());
-	for (int i = -3; i <= 3; i++) {
-		for (int j = -3; j <= 3; j++) {
-			pos = { i + cx, j + cz };
-			if (!g_chunkLoader.isLoaded(pos)) {
-				g_chunkLoader.setLoaded(pos);
-				g_chunkLoader.startLoad(pos);
-			}
+	int button = SDL_GetMouseState(0, 0);
+	if (isTargetValid() && SDL_BUTTON(button) == 1) {
+		g_player->setBreaking(g_player->getBreaking() + 0.01);
+		int block = g_player->getLevel()->getBlock(getTarget());
+		double hardness = blockRegistry.getRegistered(block)->getHardness();
+		if (g_player->getBreaking() >= hardness) {
+			g_player->getLevel()->setBlock(getTarget(), -1);
+			g_player->setBreaking(0);
 		}
 	}
+	else {
+		g_player->setBreaking(0);
+	}
+	updateChunkLoading();
 }
 
 void funcTickUpdater()

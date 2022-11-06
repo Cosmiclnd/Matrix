@@ -122,7 +122,9 @@ void initBlock()
 	static RegistryWrapper<BlockRegistry, Block *> BLOCKS =
 		RegistryWrapper<BlockRegistry, Block *>::
 		getWrapper(&blockRegistry, "matrix");
-	Blocks::STONE = BLOCKS.registered("stone", new RandomTextureBlock());
-	Blocks::DIRT = BLOCKS.registered("dirt", new Block());
-	Blocks::GRASS_BLOCK = BLOCKS.registered("grass_block", new Block());
+	Blocks::STONE = BLOCKS.registered("stone",
+		(new RandomTextureBlock())->setHardness(3.0));
+	Blocks::DIRT = BLOCKS.registered("dirt", (new Block())->setHardness(0.5));
+	Blocks::GRASS_BLOCK = BLOCKS.registered("grass_block",
+		(new Block())->setHardness(0.5));
 }

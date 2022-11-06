@@ -47,7 +47,10 @@ class Block {
 public:
 	Block();
 	virtual SDL_Surface *getSurface(BlockPos pos);
+	virtual double getHardness() { return hardness; }
 	virtual void setSurface(SDL_Surface *surface_);
+	virtual Block *setHardness(double hardness_) {
+		hardness = hardness_; return this; }
 	virtual bool collide(int i, int j) { return mask[i][j]; }
 };
 

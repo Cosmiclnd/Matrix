@@ -191,7 +191,13 @@ void WorldScreen::showPlayerScene()
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 160);
 	SDL_RenderDrawRect(renderer, &rect);
 	targetValid = targetValid_;
-	setCursor(Cursors::SELECTED);
+	int button = SDL_GetMouseState(0, 0);
+	if (targetValid && SDL_BUTTON(button) == 1) {
+		setCursor(Cursors::PICKAXE);
+	}
+	else {
+		setCursor(Cursors::SELECTED);
+	}
 }
 
 void WorldScreen::showOverBlocks()
@@ -247,6 +253,16 @@ static void hookKeydown(KeydownHook *hook)
 	else if (sym == SDLK_MINUS) g_overBlocks--;
 	if (g_overBlocks < 0) g_overBlocks = 0;
 	else if (g_overBlocks > 4) g_overBlocks = 4;
+}
+
+BlockPos getTarget()
+{
+	return target;
+}
+
+bool isTargetValid()
+{
+	return targetValid;
 }
 
 void initScreen()

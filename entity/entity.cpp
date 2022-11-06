@@ -94,6 +94,13 @@ void Player::updateEvent(SDL_Event *event)
 			}
 			break;
 		}
+		case SDL_MOUSEBUTTONDOWN:
+		{
+			hook = new MousedownHook(
+				event->button.button, event->button.x, event->button.y);
+			hookRegistry.pollHook(Hooks::MOUSEDOWN, hook);
+			break;
+		}
 	}
 	if (hook) delete hook;
 }

@@ -71,6 +71,18 @@ public:
 	int getSym();
 };
 
+class MousedownHook : public CancelableHook {
+protected:
+	int button, x, y;
+
+public:
+	MousedownHook(int button_, int x_, int y_);
+	bool isClicked(int button_);
+	int getButton();
+	int getX();
+	int getY();
+};
+
 typedef void (*HookFunc) (Hook *);
 
 class HookRegistry {
@@ -90,6 +102,7 @@ extern HookRegistry hookRegistry;
 namespace Hooks {
 	extern int KEYDOWN;
 	extern int KEYUP;
+	extern int MOUSEDOWN;
 };
 
 void initHook();
