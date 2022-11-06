@@ -86,3 +86,12 @@ SDL_Surface *tryLoadImage(std::string path)
 	}
 	return image;
 }
+
+SDL_Surface *forceLoadImage(std::string path)
+{
+	SDL_Surface *surface = tryLoadImage(path);
+	if (!surface) {
+		g_logger->crash("Can't load texture. \n  forceLoadImage() failed.");
+	}
+	return surface;
+}

@@ -105,11 +105,7 @@ void BlockRegistry::loadDebugTexture(ResourceLocation name_, Block *block)
 {
 	std::string name = name_;
 	std::string filename = "assets/matrix/textures/block/debug.png";
-	SDL_Surface *surface = tryLoadImage(filename);
-	if (!surface) {
-		g_logger->crash("Resource pack is damaged, failed to register %s",
-			name.c_str());
-	}
+	SDL_Surface *surface = forceLoadImage(filename);
 	block->setSurface(rotozoomSurfaceXY(surface, 0,
 		Settings::BLOCK_LENGTH_PIXEL / double(surface->w),
 		Settings::BLOCK_LENGTH_PIXEL / double(surface->h), 0));

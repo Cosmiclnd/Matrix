@@ -117,14 +117,6 @@ void Ascii::blitChar(
 
 void initFont()
 {
-	g_sgaLetters = tryLoadImage("assets/matrix/textures/font/sga.png");
-	if (!g_sgaLetters) {
-		g_logger->crash(
-			"Resource pack is damaged, failed to load SGA Letters");
-	}
-	g_asciiLetters = tryLoadImage("assets/matrix/textures/font/ascii.png");
-	if (!g_asciiLetters) {
-		g_logger->crash(
-			"Resource pack is damaged, failed to load ASCII Letters");
-	}
+	g_sgaLetters = forceLoadImage("assets/matrix/textures/font/sga.png");
+	g_asciiLetters = forceLoadImage("assets/matrix/textures/font/ascii.png");
 }
