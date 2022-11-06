@@ -119,8 +119,8 @@ namespace Blocks {
 
 void initBlock()
 {
-	static RegistryWrapper<BlockRegistry, Block> BLOCKS =
-		RegistryWrapper<BlockRegistry, Block>::
+	static RegistryWrapper<BlockRegistry, Block *> BLOCKS =
+		RegistryWrapper<BlockRegistry, Block *>::
 		getWrapper(&blockRegistry, "matrix");
 	Blocks::STONE = BLOCKS.registered("stone", new RandomTextureBlock());
 	Blocks::DIRT = BLOCKS.registered("dirt", new Block());

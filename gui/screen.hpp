@@ -76,6 +76,7 @@ private:
 	void showSubChunk(Chunk *chunk, SubChunk *subChunk, int x, int y, int z,
 		double px, double py, double pz, bool *vis, int &count);
 	void showPlayerScene();
+	void showShowBlocks();
 };
 
 class ScreenRegistry {

@@ -16,6 +16,7 @@
                 "gui/font.cpp",
                 "gui/gui.cpp",
                 "gui/screen.cpp",
+                "gui/texture.cpp",
                 "world/block.cpp",
                 "world/core.cpp",
                 "world/item.cpp",

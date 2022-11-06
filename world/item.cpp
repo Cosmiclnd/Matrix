@@ -109,8 +109,8 @@ namespace Items {
 
 void initItem()
 {
-	static RegistryWrapper<ItemRegistry, Item> ITEMS =
-		RegistryWrapper<ItemRegistry, Item>::getWrapper(
+	static RegistryWrapper<ItemRegistry, Item *> ITEMS =
+		RegistryWrapper<ItemRegistry, Item *>::getWrapper(
 		&itemRegistry, "matrix");
 	Items::STICK = ITEMS.registered("stick", new Item(Item::Properties()));
 }

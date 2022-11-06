@@ -29,6 +29,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "world/tick.hpp"
 #include "world/item.hpp"
 #include "gui/font.hpp"
+#include "gui/texture.hpp"
 #include "gen/gen.hpp"
 
 int Settings::FPS = 60;
@@ -36,6 +37,7 @@ int Settings::FPS = 60;
 void initAll()
 {
 	init();
+	initTexture();
 	initBlock();
 	initItem();
 	initHook();

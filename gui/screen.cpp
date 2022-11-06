@@ -172,6 +172,11 @@ void WorldScreen::showPlayerScene()
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
+void WorldScreen::showShowBlocks()
+{
+	;
+}
+
 ScreenRegistry::ScreenRegistry()
 	: present(0)
 {
@@ -209,10 +214,10 @@ namespace Screens {
 
 void initScreen()
 {
-	static RegistryWrapper<ScreenRegistry, Screen> SCREENS =
-		RegistryWrapper<ScreenRegistry, Screen>::
+	static RegistryWrapper<ScreenRegistry, Screen *> SCREENS =
+		RegistryWrapper<ScreenRegistry, Screen *>::
 		getWrapper(&screenRegistry, "matrix");
 	Screens::START = SCREENS.registered("start", new StartScreen());
 	Screens::WORLD = SCREENS.registered("world", new WorldScreen());
-	g_overBlocks = 0;
+	g_overBlocks = 2;
 }

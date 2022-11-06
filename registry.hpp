@@ -40,12 +40,12 @@ class RegistryWrapper {
 	std::string id;
 
 public:
-	int registered(std::string name, U *obj);
+	int registered(std::string name, U obj);
 	static RegistryWrapper<T, U> getWrapper(T *registry, std::string id);
 };
 
 template <typename T, typename U>
-int RegistryWrapper<T, U>::registered(std::string name, U *obj)
+int RegistryWrapper<T, U>::registered(std::string name, U obj)
 {
 	return registry->registered(ResourceLocation(id, name), obj);
 }

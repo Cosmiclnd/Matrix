@@ -93,8 +93,8 @@ namespace Hooks {
 
 void initHook()
 {
-	static RegistryWrapper<HookRegistry, Hook> HOOKS =
-		RegistryWrapper<HookRegistry, Hook>::
+	static RegistryWrapper<HookRegistry, Hook *> HOOKS =
+		RegistryWrapper<HookRegistry, Hook *>::
 		getWrapper(&hookRegistry, "matrix");
 	Hooks::KEYDOWN = HOOKS.registered("keydown", 0);
 	Hooks::KEYUP = HOOKS.registered("keyup", 0);
