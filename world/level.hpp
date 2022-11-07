@@ -69,4 +69,6 @@ namespace Levels {
 	extern Level *OVERWORLD;
 };
 
+void initLevel();
+
 #endif

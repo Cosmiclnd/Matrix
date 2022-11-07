@@ -77,6 +77,7 @@ public:
 
 namespace Blocks {
 	extern int STONE;
+	extern int BEDROCK;
 	extern int DIRT;
 	extern int GRASS_BLOCK;
 };

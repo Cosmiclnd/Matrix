@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "level.hpp"
 #include "../functions.hpp"
 #include "../maths.hpp"
+#include "../hook.hpp"
 
 SubChunk::SubChunk(SubChunkPos pos_)
 	: pos(pos_)
@@ -131,3 +132,22 @@ Chunk *Level::newChunk(ChunkPos pos)
 namespace Levels {
 	Level *OVERWORLD = (new Level())->setGravity(0.05);
 };
+
+static void hookMousedown(MousedownHook *hook)
+{
+	if (hook->getButton() == SDL_BUTTON_LEFT) {
+		g_player->getLevel()->setBlock(getTarget(), -1);
+	}
+	else if (hook->getButton() == SDL_BUTTON_RIGHT) {
+		BlockPos target = getTarget();
+		BlockPos pos = { target.x, target.y + 1, target.z};
+		if (g_player->getLevel()->getBlock(pos) == -1) {
+			g_player->getLevel()->setBlock(pos, Blocks::STONE);
+		}
+	}
+}
+
+void initLevel()
+{
+	hookRegistry.addListener(Hooks::MOUSEDOWN, (HookFunc) hookMousedown);
+}

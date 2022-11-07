@@ -28,12 +28,20 @@ static void funcChunkLoader(Chunk *chunk, int seed)
 {
 	ChunkPos cpos = chunk->getPos();
 	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 16; j++) {
+		for (int k = 0; k < 16; k++) {
+			for (int j = 0; j < 63; j++) {
+				chunk->setBlock(BlockPos(
+					(cpos.x << 4) + i,
+					j,
+					(cpos.z << 4) + k),
+					Blocks::DIRT);
+			}
 			chunk->setBlock(BlockPos(
 				(cpos.x << 4) + i,
-				90,
-				(cpos.z << 4) + j),
+				63,
+				(cpos.z << 4) + k),
 				Blocks::GRASS_BLOCK);
+			
 		}
 	}
 }

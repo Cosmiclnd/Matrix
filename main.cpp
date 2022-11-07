@@ -38,37 +38,34 @@ int Settings::FPS = 60;
 void initAll()
 {
 	init();
+	initMaths();
 	initHook();
 	initTexture();
 	initBlock();
 	initItem();
 	initCursor();
 	initScreen();
-	initMaths();
 	initEntity();
 	initFont();
+	initLevel();
 }
 
 int main()
 {
 	initAll();
 	g_player->setLevel(Levels::OVERWORLD);
-	g_player->teleport(0, 91, 0);
+	g_player->teleport(0, 64, 0);
 	g_player->pushGuiLayer(
 		new GuiLayer(makeNewScreen<WorldScreen>(Screens::WORLD, g_player)));
 	g_chunkLoader.setSeed(0);
 	g_chunkLoader.setLevel(Levels::OVERWORLD);
 	ChunkPos pos;
-	for (int i = -1; i <= 1; i++) {
-		for (int j = -1; j <= 1; j++) {
+	for (int i = -5; i <= 5; i++) {
+		for (int j = -5; j <= 5; j++) {
 			pos = { i, j };
 			g_chunkLoader.nowLoad(pos);
 		}
 	}
-	Levels::OVERWORLD->setBlock(BlockPos(2, 91, 2), Blocks::STONE);
-	Levels::OVERWORLD->setBlock(BlockPos(2, 92, 3), Blocks::STONE);
-	Levels::OVERWORLD->setBlock(BlockPos(2, 93, 4), Blocks::DIRT);
-	Levels::OVERWORLD->setBlock(BlockPos(2, 94, 5), Blocks::GRASS_BLOCK);
 	std::thread threadTickUpdater(funcTickUpdater);
 	SDL_Event event;
 	while (1) {

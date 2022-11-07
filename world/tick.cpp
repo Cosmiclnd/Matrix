@@ -137,9 +137,15 @@ static void doTick()
 	if (isTargetValid() && SDL_BUTTON(button) == 1) {
 		g_player->setBreaking(g_player->getBreaking() + 0.01);
 		int block = g_player->getLevel()->getBlock(getTarget());
-		double hardness = blockRegistry.getRegistered(block)->getHardness();
-		if (g_player->getBreaking() >= hardness) {
-			g_player->getLevel()->setBlock(getTarget(), -1);
+		//double hardness = blockRegistry.getRegistered(block)->getHardness();
+		double hardness = 0.05;
+		if (hardness >= 0) {
+			if (g_player->getBreaking() >= hardness) {
+				g_player->getLevel()->setBlock(getTarget(), -1);
+				g_player->setBreaking(0);
+			}
+		}
+		else {
 			g_player->setBreaking(0);
 		}
 	}

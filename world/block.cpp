@@ -113,6 +113,7 @@ void BlockRegistry::loadDebugTexture(ResourceLocation name_, Block *block)
 
 namespace Blocks {
 	int STONE;
+	int BEDROCK;
 	int DIRT;
 	int GRASS_BLOCK;
 };
@@ -124,6 +125,8 @@ void initBlock()
 		getWrapper(&blockRegistry, "matrix");
 	Blocks::STONE = BLOCKS.registered("stone",
 		(new RandomTextureBlock())->setHardness(3.0));
+	Blocks::BEDROCK = BLOCKS.registered("bedrock",
+		(new Block())->setHardness(-1));
 	Blocks::DIRT = BLOCKS.registered("dirt", (new Block())->setHardness(0.5));
 	Blocks::GRASS_BLOCK = BLOCKS.registered("grass_block",
 		(new Block())->setHardness(0.5));

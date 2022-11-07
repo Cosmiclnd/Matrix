@@ -105,7 +105,7 @@ void HookRegistry::addListener(int id, HookFunc func)
 void HookRegistry::pollHook(int id, Hook *hook)
 {
 	if (id >= present) throw BadHookType();
-	for (auto it = hooks[id]->begin(); it != hooks[id]->end(); it++) {
+	for (auto it = hooks[id]->rbegin(); it != hooks[id]->rend(); it++) {
 		((HookFunc) *it)(hook);
 	}
 }
