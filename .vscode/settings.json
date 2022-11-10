@@ -64,6 +64,7 @@
 		"list": "cpp",
 		"thread": "cpp",
 		"sstream": "cpp",
-		"__functional_03": "cpp"
+		"__functional_03": "cpp",
+		"cmath": "cpp"
 	}
 }

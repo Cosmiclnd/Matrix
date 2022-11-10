@@ -41,11 +41,6 @@ namespace Maths {
 		return x < 0 ? -1 : (x > 0 ? 1 : 0);
 	}
 
-	unsigned long long chunkKey(int x, int z)
-	{
-		return (unsigned long long) x << 32 | (unsigned int) z;
-	}
-
 	double sin(int x)
 	{
 		return _sin[x];
@@ -54,6 +49,47 @@ namespace Maths {
 	double cos(int x)
 	{
 		return _cos[x];
+	}
+
+	float sqrt(float x)
+	{
+		return 1.0f / invsqrt(x);
+	}
+
+	double sqrt(double x)
+	{
+		return 1.0 / invsqrt(x);
+	}
+
+	float invsqrt(float x)
+	{
+		long i;
+		float x2, y;
+		x2 = x / 2;
+		y = x;
+		i = *(long *) &y;
+		i = 0x5f375a86 - (i >> 1);
+		y = *(float *) &i;
+		y = y * (1.5f - (x2 * y * y));
+		return y;
+	}
+
+	double invsqrt(double x)
+	{
+		long long i;
+		double x2, y;
+		x2 = x / 2;
+		y = x;
+		i = *(long long *) &y;
+		i = 0x5fe69caefdfe4c01 - (i >> 1);
+		y = *(double *) &i;
+		y = y * (1.5 - (x2 * y * y));
+		return y;
+	}
+
+	unsigned long long chunkKey(int x, int z)
+	{
+		return (unsigned long long) x << 32 | (unsigned int) z;
 	}
 
 	char toChar(int x)
