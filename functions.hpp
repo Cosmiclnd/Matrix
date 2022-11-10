@@ -31,8 +31,8 @@ void error(std::string msg);
 void init();
 void quit();
 
-SDL_Surface *tryLoadImage(std::string path);
-SDL_Surface *forceLoadImage(std::string path);
+SDL_Surface *tryLoadImage(std::string path, bool error = true);
+SDL_Surface *forceLoadImage(std::string path, bool error = true);
 
 extern SDL_Window *g_window;
 extern SDL_Surface *g_screen;

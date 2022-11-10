@@ -72,24 +72,26 @@ void quit()
 	exit(0);
 }
 
-SDL_Surface *tryLoadImage(std::string path)
+SDL_Surface *tryLoadImage(std::string path, bool error)
 {
 	std::string filename = std::string(SDL_GetBasePath() + path);
 	if (!std::filesystem::exists(filename)) {
-		g_logger->error("File not found: %s", filename.c_str());
+		if (error)
+			g_logger->error("File not found: %s", filename.c_str());
 		return 0;
 	}
 	SDL_Surface *image = IMG_Load(filename.c_str());
 	if (!image) {
-		g_logger->error("Failed to load texture: %s", filename.c_str());
+		if (error)
+			g_logger->error("Failed to load texture: %s", filename.c_str());
 		return 0;
 	}
 	return image;
 }
 
-SDL_Surface *forceLoadImage(std::string path)
+SDL_Surface *forceLoadImage(std::string path, bool error)
 {
-	SDL_Surface *surface = tryLoadImage(path);
+	SDL_Surface *surface = tryLoadImage(path, error);
 	if (!surface) {
 		g_logger->crash("Can't load texture. \n  forceLoadImage() failed.");
 	}

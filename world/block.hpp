@@ -40,14 +40,17 @@ class BadBlockType : std::exception {
 };
 
 class Block {
+	int itemId;
 	double hardness;
 	SDL_Surface *surface;
 	bool mask[Settings::BLOCK_LENGTH_PIXEL][Settings::BLOCK_LENGTH_PIXEL];
 
 public:
 	Block();
+	virtual int getItemId() { return itemId; }
 	virtual SDL_Surface *getSurface(BlockPos pos);
 	virtual double getHardness() { return hardness; }
+	virtual void setItemId(int itemId_) { itemId = itemId_; }
 	virtual void setSurface(SDL_Surface *surface_);
 	virtual Block *setHardness(double hardness_) {
 		hardness = hardness_; return this; }

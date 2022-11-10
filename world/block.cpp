@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "block.hpp"
 #include "../functions.hpp"
 #include "../maths.hpp"
+#include "item.hpp"
 
 #include <filesystem>
 #include <unordered_map>
@@ -86,6 +87,8 @@ int BlockRegistry::registered(ResourceLocation name_, Block *block)
 	block->setSurface(rotozoomSurfaceXY(surface, 0,
 		Settings::BLOCK_LENGTH_PIXEL / double(surface->w),
 		Settings::BLOCK_LENGTH_PIXEL / double(surface->h), 1));
+	block->setItemId(itemRegistry.registered(
+		name_, new Item(Item::Properties())));
 	return present - 1;
 }
 

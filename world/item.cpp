@@ -63,9 +63,7 @@ int ItemRegistry::registered(ResourceLocation name_, Item *item)
 	map[name] = present;
 	items[present++] = item;
 	g_logger->info("Item %s registered, id %d", name.c_str(), present - 1);
-	std::string filename = "assets/matrix/textures/item/" +
-		name_.getName() + ".png";
-	SDL_Surface *surface = tryLoadImage(filename);
+	SDL_Surface *surface = loadTexture(name_.getName());
 	if (!surface) {
 		g_logger->warn("Loading debug texture instead");
 		loadDebugTexture(name_, item);
@@ -101,6 +99,19 @@ void ItemRegistry::loadDebugTexture(ResourceLocation name_, Item *item)
 	item->setSurface(rotozoomSurfaceXY(surface, 0,
 		Settings::ITEM_LENGTH_PIXEL / double(surface->w),
 		Settings::ITEM_LENGTH_PIXEL / double(surface->h), 0));
+}
+
+SDL_Surface *ItemRegistry::loadTexture(std::string name)
+{
+	std::string filename = "assets/matrix/textures/item/" +
+		name + ".png";
+	SDL_Surface *surface = tryLoadImage(filename, false);
+	if (!surface) {
+		filename = "assets/matrix/textures/block/" +
+			name + ".png";
+		surface = tryLoadImage(filename);
+	}
+	return surface;
 }
 
 namespace Items {

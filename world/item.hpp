@@ -76,6 +76,9 @@ public:
 	Item *getRegistered(int id);
 	Item *getRegistered(std::string name);
 	void loadDebugTexture(ResourceLocation name, Item *item);
+
+private:
+	SDL_Surface *loadTexture(std::string name);
 };
 
 namespace Items {
