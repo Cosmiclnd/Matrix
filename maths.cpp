@@ -64,27 +64,29 @@ namespace Maths {
 	float invsqrt(float x)
 	{
 		long i;
-		float x2, y;
-		x2 = x / 2;
-		y = x;
-		i = *(long *) &y;
+		float x2;
+		x2 = x * 0.5;
+		i = *(long *) &x;
 		i = 0x5f375a86 - (i >> 1);
-		y = *(float *) &i;
-		y = y * (1.5f - (x2 * y * y));
-		return y;
+		x = *(float *) &i;
+		x = x * (1.5f - (x2 * x * x));
+		x = x * (1.5f - (x2 * x * x));
+		x = x * (1.5f - (x2 * x * x));
+		return x;
 	}
 
 	double invsqrt(double x)
 	{
 		long long i;
-		double x2, y;
-		x2 = x / 2;
-		y = x;
-		i = *(long long *) &y;
-		i = 0x5fe69caefdfe4c01 - (i >> 1);
-		y = *(double *) &i;
-		y = y * (1.5 - (x2 * y * y));
-		return y;
+		double x2;
+		x2 = x * 0.5;
+		i = *(long long *) &x;
+		i = 0x5fe68e93c3ddae18 - (i >> 1);
+		x = *(double *) &i;
+		x = x * (1.5 - (x2 * x * x));
+		x = x * (1.5 - (x2 * x * x));
+		x = x * (1.5 - (x2 * x * x));
+		return x;
 	}
 
 	unsigned long long chunkKey(int x, int z)

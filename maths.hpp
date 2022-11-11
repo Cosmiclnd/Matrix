@@ -23,7 +23,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <string>
 
 class Vector2 {
-	float x, y;
+	double x, y;
+
+public:
+	inline Vector2();
+	inline Vector2(double x_, double y_);
+	inline Vector2(const Vector2& vec);
 };
 
 namespace Maths {
