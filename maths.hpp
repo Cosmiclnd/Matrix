@@ -28,7 +28,19 @@ class Vector2 {
 public:
 	inline Vector2();
 	inline Vector2(double x_, double y_);
-	inline Vector2(const Vector2& vec);
+
+	inline Vector2 operator-();
+	inline Vector2 operator+(const Vector2 &vec);
+	inline Vector2 operator-(const Vector2 &vec);
+	inline Vector2 operator*(double a);
+	inline Vector2 operator*(const Vector2 &vec);
+	inline Vector2 operator/(double a);
+	inline Vector2 operator/(const Vector2 &vec);
+
+	inline double length();
+	inline double dot(const Vector2 &vec);
+	inline void normalize();
+	inline void zero();
 };
 
 namespace Maths {

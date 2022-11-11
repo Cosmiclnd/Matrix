@@ -22,6 +22,69 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <cmath>
 #include <sstream>
 
+Vector2::Vector2()
+	: x(0), y(0)
+{}
+
+Vector2::Vector2(double x_, double y_)
+	: x(x_), y(y_)
+{}
+
+Vector2 Vector2::operator-()
+{
+	return Vector2(-x, -y);
+}
+
+Vector2 Vector2::operator+(const Vector2 &vec)
+{
+	return Vector2(x + vec.x, y + vec.y);
+}
+
+Vector2 Vector2::operator-(const Vector2 &vec)
+{
+	return Vector2(x - vec.x, y - vec.y);
+}
+
+Vector2 Vector2::operator*(double a)
+{
+	return Vector2(x * a, y * a);
+}
+
+Vector2 Vector2::operator*(const Vector2 &vec)
+{
+	return Vector2(x * vec.x, y * vec.y);
+}
+
+Vector2 Vector2::operator/(double a)
+{
+	return Vector2(x / a, y / a);
+}
+
+Vector2 Vector2::operator/(const Vector2 &vec)
+{
+	return Vector2(x / vec.x, y / vec.y);
+}
+
+double Vector2::length()
+{
+	return Maths::sqrt(x * x + y * y);
+}
+
+double Vector2::dot(const Vector2 &vec)
+{
+	return x * vec.x + y * vec.y;
+}
+
+void Vector2::normalize()
+{
+	double mg = x * x + y * y;
+	if (mg >= 0) {
+		double rs = Maths::invsqrt(mg);
+		x *= rs;
+		y += rs;
+	}
+}
+
 namespace Maths {
 
 	int div(int x, int y)
