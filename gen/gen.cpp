@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "gen.hpp"
+#include "noise.hpp"
 #include "../maths.hpp"
 #include "../functions.hpp"
 #include "../world/block.hpp"
@@ -27,9 +28,20 @@ ChunkLoader g_chunkLoader;
 static void funcChunkLoader(Chunk *chunk, int seed)
 {
 	ChunkPos cpos = chunk->getPos();
+	double x, y;
 	for (int i = 0; i < 16; i++) {
 		for (int k = 0; k < 16; k++) {
-			for (int j = 0; j < 63; j++) {
+			x = ((cpos.x << 4) + i) * 0.125;
+			y = ((cpos.z << 4) + k) * 0.125;
+			int h = 64 + round(Noises::perlinNoise(x, y) * 5 - 4);
+			for (int j = 0; j < h - 3; j++) {
+				chunk->setBlock(BlockPos(
+					(cpos.x << 4) + i,
+					j,
+					(cpos.z << 4) + k),
+					Blocks::STONE);
+			}
+			for (int j = h - 3; j < h; j++) {
 				chunk->setBlock(BlockPos(
 					(cpos.x << 4) + i,
 					j,
@@ -38,7 +50,7 @@ static void funcChunkLoader(Chunk *chunk, int seed)
 			}
 			chunk->setBlock(BlockPos(
 				(cpos.x << 4) + i,
-				63,
+				h,
 				(cpos.z << 4) + k),
 				Blocks::GRASS_BLOCK);
 			

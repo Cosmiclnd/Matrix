@@ -21,69 +21,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <cmath>
 #include <sstream>
+#include <algorithm>
 
-Vector2::Vector2()
-	: x(0), y(0)
-{}
-
-Vector2::Vector2(double x_, double y_)
-	: x(x_), y(y_)
-{}
-
-Vector2 Vector2::operator-()
-{
-	return Vector2(-x, -y);
-}
-
-Vector2 Vector2::operator+(const Vector2 &vec)
-{
-	return Vector2(x + vec.x, y + vec.y);
-}
-
-Vector2 Vector2::operator-(const Vector2 &vec)
-{
-	return Vector2(x - vec.x, y - vec.y);
-}
-
-Vector2 Vector2::operator*(double a)
-{
-	return Vector2(x * a, y * a);
-}
-
-Vector2 Vector2::operator*(const Vector2 &vec)
-{
-	return Vector2(x * vec.x, y * vec.y);
-}
-
-Vector2 Vector2::operator/(double a)
-{
-	return Vector2(x / a, y / a);
-}
-
-Vector2 Vector2::operator/(const Vector2 &vec)
-{
-	return Vector2(x / vec.x, y / vec.y);
-}
-
-double Vector2::length()
-{
-	return Maths::sqrt(x * x + y * y);
-}
-
-double Vector2::dot(const Vector2 &vec)
-{
-	return x * vec.x + y * vec.y;
-}
-
-void Vector2::normalize()
-{
-	double mg = x * x + y * y;
-	if (mg >= 0) {
-		double rs = Maths::invsqrt(mg);
-		x *= rs;
-		y += rs;
-	}
-}
+static unsigned int BIT_HASH1 = 0x85297a4d;
+static unsigned int BIT_HASH2 = 0x68e31da4;
+static unsigned int BIT_HASH3 = 0x1b56cae9;
 
 namespace Maths {
 

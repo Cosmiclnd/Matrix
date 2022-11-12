@@ -20,4 +20,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GEN_NOISE_HPP
 #define __GEN_NOISE_HPP
 
+#include "../maths.hpp"
+
+namespace Noises {
+	double noise(int x, int y);
+	double smoothedNoise(int x, int y);
+	double cosInterpolate(double a, double b, double x);
+	double interpolatedNoise(double x, double y);
+	double perlinNoise(double x, double y);
+};
+
 #endif

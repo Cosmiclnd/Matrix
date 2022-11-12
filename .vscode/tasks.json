@@ -13,6 +13,7 @@
                 "registry.cpp",
                 "entity/entity.cpp",
                 "gen/gen.cpp",
+                "gen/noise.cpp",
                 "gui/cursor.cpp",
                 "gui/font.cpp",
                 "gui/gui.cpp",

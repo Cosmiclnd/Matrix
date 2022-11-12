@@ -65,6 +65,9 @@
 		"thread": "cpp",
 		"sstream": "cpp",
 		"__functional_03": "cpp",
-		"cmath": "cpp"
+		"cmath": "cpp",
+		"ctgmath": "cpp",
+		"ccomplex": "cpp",
+		"complex": "cpp"
 	}
 }
