@@ -49,7 +49,24 @@ BlockItem::BlockItem(Item::Properties prop, int blockId_)
 
 ItemStack::ItemStack(int id_, int size_)
 	: id(id_), size(size_)
-{}
+{
+	item = itemRegistry.getRegistered(id);
+}
+
+SDL_Surface *ItemStack::getSurface()
+{
+	return item->getSurface();
+}
+
+int ItemStack::getMaxStack()
+{
+	return item->getMaxStack();
+}
+
+int ItemStack::add(int num)
+{
+	if (num <= 0) return num;
+}
 
 ItemRegistry::ItemRegistry()
 	: present(0)

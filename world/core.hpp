@@ -20,6 +20,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef __WORLD_CORE_HPP
 #define __WORLD_CORE_HPP
 
+#include <unordered_map>
+#include <sstream>
+
 struct BlockPos {
 	long long x : 27;
 	long long y : 10;
@@ -38,6 +41,60 @@ struct ChunkPos {
 	int x, z;
 	ChunkPos() : x(0), z(0) {};
 	ChunkPos(int x_, int z_) : x(x_), z(z_) {}
+};
+
+namespace DataTypes {
+	const int INT = 0;
+	const int DOUBLE = 1;
+	const int STRING = 2;
+	const int ARRAY = 3;
+	const int LIST = 4;
+	const int COMPOUND = 5;
+};
+
+class ByteBuf {
+	std::string buf;
+
+public:
+	void putInt(int x);
+	void putDouble(double x);
+	void putString(std::string x);
+	int readInt();
+	double readDouble();
+	std::string readString();
+};
+
+class Tag {
+	static const int type = -1;
+
+public:
+	virtual void read(ByteBuf &buf) = 0;
+	virtual void save(ByteBuf &buf) = 0;
+};
+
+class IntTag : public Tag {
+protected:
+	static const int type = DataTypes::INT;
+	int i;
+
+public:
+	virtual void read(ByteBuf &buf);
+	virtual void save(ByteBuf &buf);
+	virtual int getValue();
+	virtual void setValue(int x);
+};
+
+class CompoundTag : public Tag {
+protected:
+	static const int type = DataTypes::COMPOUND;
+	std::unordered_map<std::string, Tag *> content;
+
+public:
+	CompoundTag() : content() {}
+	virtual void read(ByteBuf &buf);
+	virtual void save(ByteBuf &buf);
+	virtual Tag *getValue(std::string key);
+	virtual void setValue(std::string key, Tag *tag);
 };
 
 #endif

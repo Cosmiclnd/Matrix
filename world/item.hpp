@@ -69,9 +69,16 @@ public:
 
 class ItemStack {
 	int id, size;
+	Item *item;
 
 public:
 	ItemStack(int id_, int size_);
+
+	SDL_Surface *getSurface();
+	int getMaxStack();
+
+	int add(int num);
+	int sub(int num);
 };
 
 class ItemRegistry {
