@@ -48,4 +48,5 @@ void initTexture()
 	TEXTURES.registered("pickaxe", "gui/world/pickaxe.png");
 	TEXTURES.registered("sword", "gui/world/sword.png");
 	TEXTURES.registered("selected", "gui/world/selected.png");
+	TEXTURES.registered("widgets", "gui/world/widgets.png");
 }

@@ -38,6 +38,7 @@ class BadItemType : std::exception {
 };
 
 class Item {
+protected:
 	int maxStack;
 	SDL_Surface *surface;
 
@@ -53,9 +54,17 @@ public:
 	};
 
 	Item(Properties prop);
-	int getMaxStack();
-	SDL_Surface *getSurface();
-	void setSurface(SDL_Surface *surface_);
+	virtual int getMaxStack();
+	virtual SDL_Surface *getSurface();
+	virtual void setSurface(SDL_Surface *surface_);
+};
+
+class BlockItem : public Item {
+protected:
+	int blockId;
+
+public:
+	BlockItem(Properties prop, int blockId_);
 };
 
 class ItemStack {

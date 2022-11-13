@@ -6,6 +6,7 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-std=c++17",
+                "-g",
                 "main.cpp",
                 "functions.cpp",
                 "hook.cpp",

@@ -73,5 +73,5 @@ void Logger::crash(const char *format, ...)
 	va_start(va, format);
 	print(format, va);
 	va_end(va);
-	exit(1);
+	abort();
 }

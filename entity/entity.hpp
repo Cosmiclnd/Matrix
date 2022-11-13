@@ -24,6 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "../gui/gui.hpp"
 #include "../world/level.hpp"
+#include "../world/item.hpp"
 
 class Entity {
 protected:

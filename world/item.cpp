@@ -43,6 +43,10 @@ void Item::setSurface(SDL_Surface *surface_)
 	surface = surface_;
 }
 
+BlockItem::BlockItem(Item::Properties prop, int blockId_)
+	: Item(prop), blockId(blockId_)
+{}
+
 ItemStack::ItemStack(int id_, int size_)
 	: id(id_), size(size_)
 {}

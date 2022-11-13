@@ -88,7 +88,7 @@ int BlockRegistry::registered(ResourceLocation name_, Block *block)
 		Settings::BLOCK_LENGTH_PIXEL / double(surface->w),
 		Settings::BLOCK_LENGTH_PIXEL / double(surface->h), 1));
 	block->setItemId(itemRegistry.registered(
-		name_, new Item(Item::Properties())));
+		name_, new BlockItem(Item::Properties(), present - 1)));
 	return present - 1;
 }
 
