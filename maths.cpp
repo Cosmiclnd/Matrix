@@ -68,10 +68,10 @@ namespace Maths {
 
 	float invsqrt(float x)
 	{
-		long i;
+		int i;
 		float x2;
 		x2 = x * 0.5;
-		i = *(long *) &x;
+		i = *(int *) &x;
 		i = 0x5f375a86 - (i >> 1);
 		x = *(float *) &i;
 		x = x * (1.5f - (x2 * x * x));

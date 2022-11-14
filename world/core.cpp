@@ -19,6 +19,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "core.hpp"
 
+void ByteBuf::putBool(bool x)
+{
+	buf.push_back(char(x));
+}
+
+void ByteBuf::putChar(char x)
+{
+	buf.push_back(x);
+}
+
+void ByteBuf::putShort(short x_)
+{
+	unsigned short x = *(unsigned short *) &x_;
+	char x1 = x & 0xff;
+	char x2 = (x >> 8) & 0xff;
+	buf.append({ x1, x2 });
+}
+
 void ByteBuf::putInt(int x_)
 {
 	unsigned int x = *(unsigned int *) &x_;
@@ -29,7 +47,7 @@ void ByteBuf::putInt(int x_)
 	buf.append({ x1, x2, x3, x4 });
 }
 
-void ByteBuf::putDouble(double x_)
+void ByteBuf::putLonglong(long long x_)
 {
 	unsigned long long x = *(unsigned long long *) &x_;
 	char x1 = x & 0xff;
@@ -43,9 +61,51 @@ void ByteBuf::putDouble(double x_)
 	buf.append({ x1, x2, x3, x4, x5, x6, x7, x8 });
 }
 
+void ByteBuf::putFloat(float x_)
+{
+	int x = *(int *) &x_;
+	putInt(x);
+}
+
+void ByteBuf::putDouble(double x_)
+{
+	long long x = *(long long *) &x_;
+	putLonglong(x);
+}
+
 void ByteBuf::putString(std::string x)
 {
 	buf.append(x).push_back(0);
+}
+
+bool ByteBuf::readBool()
+{
+	if (buf.size() < 1) return false;
+	char c = buf.front();
+	buf.erase(0, 1);
+	buf.shrink_to_fit();
+	return c != 0;
+}
+
+char ByteBuf::readChar()
+{
+	if (buf.size() < 1) return 0;
+	char c = buf.front();
+	buf.erase(0, 1);
+	buf.shrink_to_fit();
+	return c;
+}
+
+short ByteBuf::readShort()
+{
+	if (buf.size() < 2) return 0;
+	unsigned short x = 0;
+	x |= ((unsigned short) buf[0] & 0xff);
+	x |= ((unsigned short) buf[1] & 0xff) << 8;
+	buf.erase(0, 2);
+	buf.shrink_to_fit();
+	short x_ = *(short *) &x;
+	return x_;
 }
 
 int ByteBuf::readInt()
@@ -62,7 +122,7 @@ int ByteBuf::readInt()
 	return x_;
 }
 
-double ByteBuf::readDouble()
+long long ByteBuf::readLonglong()
 {
 	if (buf.size() < 8) return 0;
 	unsigned long long x = 0;
@@ -76,6 +136,20 @@ double ByteBuf::readDouble()
 	x |= ((unsigned long long) buf[7] & 0xff) << 56;
 	buf.erase(0, 8);
 	buf.shrink_to_fit();
+	long long x_ = *(long long *) &x;
+	return x_;
+}
+
+float ByteBuf::readFloat()
+{
+	int x = readInt();
+	float x_ = *(float *) & x;
+	return x_;
+}
+
+double ByteBuf::readDouble()
+{
+	long long x = readLonglong();
 	double x_ = *(double *) &x;
 	return x_;
 }

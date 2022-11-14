@@ -44,22 +44,37 @@ struct ChunkPos {
 };
 
 namespace DataTypes {
-	const int INT = 0;
-	const int DOUBLE = 1;
-	const int STRING = 2;
-	const int ARRAY = 3;
-	const int LIST = 4;
-	const int COMPOUND = 5;
+	const int BOOL = 0;
+	const int CHAR = 1;
+	const int SHORT = 2;
+	const int INT = 3;
+	const int LONGLONG = 4;
+	const int FLOAT = 5;
+	const int DOUBLE = 6;
+	const int STRING = 7;
+	const int ARRAY = 8;
+	const int LIST = 9;
+	const int COMPOUND = 10;
 };
 
 class ByteBuf {
 	std::string buf;
 
 public:
+	void putBool(bool x);
+	void putChar(char x);
+	void putShort(short x);
 	void putInt(int x);
+	void putLonglong(long long x);
+	void putFloat(float x);
 	void putDouble(double x);
 	void putString(std::string x);
+	bool readBool();
+	char readChar();
+	short readShort();
 	int readInt();
+	long long readLonglong();
+	float readFloat();
 	double readDouble();
 	std::string readString();
 };
